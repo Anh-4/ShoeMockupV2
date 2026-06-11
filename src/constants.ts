@@ -1,4 +1,5 @@
 import { Template } from './types';
+import { LITTLEOWH_BOX_BASE64, LITTLEOWH_BOX_MIME } from './assets/littleowhBox';
 
 export const MOCKUP_TEMPLATES: Template[] = [
   {
@@ -32,10 +33,25 @@ export const MOCKUP_TEMPLATES: Template[] = [
     prompt: 'The shoe is resting on a rustic wooden shelf in a sneaker shop. Warm ambient lighting, focus on the side profile and midsole construction.'
   },
   {
-    id: 'park_bench',
-    title: 'Trên ghế công viên',
-    icon: 'park',
-    prompt: 'The original shoe from the reference images is sitting on a rustic wooden bench in a serene public park. Natural sunlight, green grass and trees in the background. High-end product photography, maintaining strict design fidelity.'
+    id: 'littleowh_box',
+    title: 'Phôi LITTLEOWH',
+    icon: 'design_services',
+    sceneImage: { base64: LITTLEOWH_BOX_BASE64, mimeType: LITTLEOWH_BOX_MIME },
+    prompt: `STRICT TEMPLATE-LOCK MODE.
+
+REFERENCE IMAGE #1 (the blank white high-top sneakers on a kraft shoe box) is a FIXED MOCKUP TEMPLATE. Reproduce it faithfully and change NOTHING about the scene:
+- Keep the exact composition: two high-top sneakers (Air Jordan 1 silhouette) at the same positions and angles, resting on/against the cardboard shoe box.
+- Keep the cardboard box EXACTLY, including the printed branding text "SHOES CUSTOMIZED BY LITTLEOWH" / "STORE" and the owl logo — do not alter, move, translate, recolor, or remove any text or logo.
+- Keep the same camera angle, perspective, framing, studio lighting, soft shadows, reflections and the light-gray gradient background.
+- Keep the shoe silhouette, proportions, sole, midsole, black outsole and lace layout unchanged.
+
+THE ONLY THING YOU MAY CHANGE: repaint the blank white shoe UPPER so its DESIGN matches the OTHER reference image(s) — apply that design's exact colors (hex-accurate), materials, textures, patterns, panel layout, stitching and logos onto the corresponding panels of BOTH shoes. Keep the design consistent across the inner and outer shoe.
+
+CONSTRAINTS:
+- Do NOT change the box, background, lighting, or scene in any way.
+- Do NOT add any brand logo that is not present in the design reference.
+- Match the colorway precisely; if the upper is patterned/printed, wrap it naturally over the panels following the template's shape and folds.
+- Photorealistic high-end commercial product photography, 8k, razor sharp.`
   },
   {
     id: 'cosplay_shop',

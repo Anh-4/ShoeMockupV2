@@ -7,6 +7,10 @@ import MockupSelectorPanel from './components/MockupSelectorPanel';
 import { MockupResult, MediaItem, Template } from './types';
 import { MOCKUP_TEMPLATES } from './constants';
 
+// Caches the mediaId of each template's fixed scene image after its first
+// upload, so we don't re-upload the same blueprint on every generation.
+const sceneMediaIdCache = new Map<string, string>();
+
 export default function App() {
   const [insideImage, setInsideImage] = useState<MediaItem | null>(null);
   const [outsideImage, setOutsideImage] = useState<MediaItem | null>(null);
@@ -67,11 +71,33 @@ export default function App() {
       for (const template of targetTemplates) {
         setCurrentStep(`Đang tạo: ${template.title}...`);
 
-        const fullPrompt = `${fidelityBase} SCENE: ${template.prompt}. ADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}. High-end commercial product photography, 8k resolution, razor sharp details.`;
+        // Templates with a fixed sceneImage (e.g. the LITTLEOWH blank) send that
+        // image FIRST as the locked blueprint, then the user's design photos.
+        // The template-lock prompt is self-contained, so skip the generic
+        // fidelity preamble for those.
+        let referenceImageMediaIds = mediaIds;
+        let fullPrompt: string;
+
+        if (template.sceneImage) {
+          let sceneId = sceneMediaIdCache.get(template.id);
+          if (!sceneId) {
+            const up = await Flow.upload({
+              base64: template.sceneImage.base64,
+              mimeType: template.sceneImage.mimeType,
+              name: 'template-scene'
+            });
+            sceneId = up.mediaId;
+            sceneMediaIdCache.set(template.id, sceneId);
+          }
+          referenceImageMediaIds = [sceneId, ...mediaIds];
+          fullPrompt = `${template.prompt}\n\nADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}.`;
+        } else {
+          fullPrompt = `${fidelityBase} SCENE: ${template.prompt}. ADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}. High-end commercial product photography, 8k resolution, razor sharp details.`;
+        }
 
         const result = await Flow.generate.image({
           prompt: fullPrompt,
-          referenceImageMediaIds: mediaIds,
+          referenceImageMediaIds,
           modelDisplayName: '🍌 Nano Banana Pro',
           aspectRatio: '1:1'
         });
