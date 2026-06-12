@@ -70,7 +70,7 @@ export const MOCKUP_TEMPLATES: Template[] = [
     id: 'box',
     title: 'Trong hộp giày',
     icon: 'inventory_2',
-    prompt: 'Premium studio product photography of the original shoes from the reference images. The shoes are presented with their open cardboard shoe box. Composition: either one shoe is placed inside the box and the other sits elegantly outside next to it, or both shoes are neatly arranged together inside the open box. The camera angle is low and slightly diagonal from the front, clearly showcasing the front toe box and the side details of the shoes. High-end cinematic lighting, crisp textures, soft shadows, and professional studio background.'
+    prompt: 'Premium studio product photography of the original shoes from the reference images, presented with their open cardboard shoe box. CAMERA ANGLE: shot from directly above (top-down / flat-lay bird\'s-eye view) OR from a high angle looking down at roughly 45–50 degrees. COMPOSITION is flexible — for example one shoe resting inside the open box and the other placed neatly beside it outside, or both shoes arranged together inside the box, or one in and one out at a pleasing angle. Whichever arrangement is used, BOTH shoes must be FULLY and CLEARLY visible in the frame — not overlapping, cropped or hidden by the box. High-end cinematic lighting, crisp textures, soft shadows, professional studio background.'
   },
   {
     id: 'classroom',
