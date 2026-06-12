@@ -101,7 +101,7 @@ export default function App() {
           fullPrompt = [
             templatePrompt,
             shoeDescription ? `\nADDITIONAL NOTES: ${shoeDescription}` : '',
-            `\nFINAL CHECK: keep reference image #1 (the template) EXACTLY — its box, background, lighting, and the shoe's sole + silhouette. The ONLY change allowed is painting the upper with the design from the OTHER reference image(s), copied 1:1. Add, remove or invent NO detail.`
+            `\nFINAL CHECK before output: (1) box, background, lighting, silhouette and the plain white sole/midsole stay EXACTLY as in reference image #1 — there is NO "AIR" or Nike text on the heel/sole, the midsole is smooth and blank; (2) the shoe UPPER clearly shows the design copied from the design-source image(s) and is NOT left plain white.`
           ].join('');
         } else {
           // Regular scene mockups: the uploaded shoe IS the subject. Frame this as

@@ -8,23 +8,28 @@ import { AF1_BOX_BASE64, AF1_BOX_MIME } from './assets/af1Box';
  * silhouette) so the model knows exactly what must stay untouched.
  */
 function blankLockPrompt(sceneDescription: string): string {
-  return `STRICT TEMPLATE-LOCK MODE.
+  return `STRICT TEMPLATE-LOCK MODE — this is an IMAGE EDIT of reference image #1, NOT a fresh render.
 
-REFERENCE IMAGE #1 (${sceneDescription}) is a FIXED MOCKUP TEMPLATE. Reproduce it faithfully and change NOTHING about the scene:
-- Keep the exact composition: the shoes at the same positions and angles, resting on/against the same surface or box.
-- Keep every printed branding text and logo EXACTLY as shown — do not alter, move, translate, recolor, or remove any text or logo.
-- Keep the same camera angle, perspective, framing, studio lighting, soft shadows, reflections and background.
-- Keep the shoe silhouette, proportions and lace layout unchanged. Keep the SOLE, midsole and outsole EXACTLY as in reference image #1 — they are plain white and completely unbranded.
+IMAGE ROLES:
+- REFERENCE IMAGE #1 (${sceneDescription}) is the FIXED MOCKUP TEMPLATE — keep its scene exactly.
+- REFERENCE IMAGE #2 (and any further images) are the DESIGN SOURCE — the colorway, artwork, materials and details you must copy onto the shoe upper.
 
-THE ONLY THING YOU MAY CHANGE: repaint the blank shoe UPPER so its DESIGN matches the OTHER reference image(s) — reproduce that design EXACTLY and pixel-faithfully: its precise colors (hex-accurate), materials, textures, patterns, artwork, panel layout, stitching and logos, mapped onto the corresponding panels of BOTH shoes. Keep the design identical across the inner and outer shoe.
+UNBRANDED CUSTOM SHOE (critical): The sneakers are generic, CUSTOM, UNBRANDED shoes. They are NOT Nike, NOT an Air Force 1, NOT an Air Jordan. There is NO Nike heel tab, NO swoosh, and the midsole has NO embossed or printed "AIR" wording anywhere. Even though the shape resembles those shoes, render the midsole and heel smooth, clean and completely BLANK. Do NOT "correct" the shoe to look like a real branded sneaker.
+
+KEEP EXACTLY AS IN REFERENCE IMAGE #1 (change nothing here):
+- The composition: the shoes at the same positions and angles, resting on/against the same surface or box.
+- Every printed text and logo on the BOX — do not alter, move, translate, recolor or remove it.
+- The camera angle, perspective, framing, studio lighting, soft shadows, reflections and background.
+- The shoe silhouette, proportions and lace layout. The SOLE, midsole and outsole stay plain white and unbranded exactly as in image #1.
+
+WHAT YOU MUST CHANGE — apply the DESIGN from the design-source image(s) onto the shoe UPPER of BOTH shoes: copy its exact colors (hex-accurate), materials, textures, patterns, artwork, panel layout, stitching and logos onto the matching panels. The finished shoes MUST clearly display this design — they must NOT stay plain white. If unsure, apply MORE of the design's colors/artwork rather than less. Keep the design consistent across the inner and outer shoe.
 
 CONSTRAINTS:
-- Do NOT change the box, background, lighting, or scene in any way.
-- SOLE / MIDSOLE BRANDING BAN: The sole and midsole stay completely plain exactly as in reference image #1. Do NOT add ANY text or logo to the sole/midsole/heel — specifically NO "AIR", NO "NIKE", no swoosh, no Jumpman, no numbers — even though the silhouette may resemble a famous sneaker. If the template sole has no lettering, the output sole has no lettering.
-- NO SPORTSWEAR LOGOS: Do NOT add a Nike swoosh, Jordan/Jumpman or any sportswear brand mark anywhere on the shoe. Only logos present in the design-reference image(s) are allowed.
-- DESIGN FIDELITY: Reproduce the uploaded design as a 1:1 copy. Do NOT add, remove, invent, embellish or modify ANY detail, logo, text, pattern or element that is not present in the design reference. No creative reinterpretation.
-- Match the colorway precisely; if the upper is patterned/printed, wrap it naturally over the panels following the template's shape and folds.
-- Photorealistic high-end commercial product photography, sharp and clean.`;
+- Do NOT change the box, background, lighting or scene in any way.
+- SOLE / MIDSOLE BRANDING BAN: keep the sole and midsole plain exactly as in image #1. Add NO text or logo to the sole/midsole/heel — NO "AIR", NO "NIKE", no swoosh, no Jumpman, no numbers — even if the silhouette resembles a famous sneaker.
+- Apply ONLY the design from the design-source image(s); do not invent extra logos, text or patterns that are not in it.
+- Match the colorway precisely; wrap patterned/printed designs naturally over the panels following the template's folds.
+- Photorealistic, sharp and clean.`;
 }
 
 /**
