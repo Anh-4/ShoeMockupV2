@@ -11,6 +11,10 @@ import { MOCKUP_TEMPLATES, SHOE_BLANKS } from './constants';
 // upload, so we don't re-upload the same blueprint on every generation.
 const sceneMediaIdCache = new Map<string, string>();
 
+// Version + build date are injected at build time (see vite.config.ts).
+const APP_VERSION = `v${__APP_VERSION__}`;
+const APP_BUILD_DATE = __APP_BUILD_DATE__;
+
 export default function App() {
   const [insideImage, setInsideImage] = useState<MediaItem | null>(null);
   const [outsideImage, setOutsideImage] = useState<MediaItem | null>(null);
@@ -220,6 +224,9 @@ export default function App() {
           >
             {isGenerating ? 'Đang tạo combo...' : `Tạo Combo ${MOCKUP_TEMPLATES.length} Mockup`}
           </PillButton>
+          <p className="text-center text-[9px] text-[rgba(218,220,224,0.35)] pt-1 select-none">
+            Shoe Mockup HD · {APP_VERSION} · {APP_BUILD_DATE}
+          </p>
         </div>
       </div>
 
@@ -228,7 +235,9 @@ export default function App() {
         {results.length === 0 && !isGenerating ? (
           <div className="h-full flex flex-col items-center justify-center text-center opacity-30">
             <span className="material-symbols-outlined text-[72px] mb-4">footprint</span>
-            <h2 className="text-xl font-medium tracking-tight">Trình tạo Mockup Giày HD</h2>
+            <h2 className="text-xl font-medium tracking-tight">
+              Trình tạo Mockup Giày HD <span className="text-sm font-normal text-[#7a7a7a]">{APP_VERSION}</span>
+            </h2>
             <p className="max-w-xs mt-2 text-sm leading-relaxed">Tải lên ảnh thật của bạn để thấy phép màu. AI sẽ giữ nguyên từng chi tiết nhỏ nhất dựa trên hình ảnh.</p>
           </div>
         ) : (
