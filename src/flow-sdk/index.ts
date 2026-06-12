@@ -21,7 +21,9 @@ const env = import.meta.env as Record<string, string | undefined>;
 const KEY_STORAGE = "gemini_api_key";
 const ENV_KEY = env.VITE_GEMINI_API_KEY ?? ""; // dev-only fallback
 const TEXT_MODEL = env.VITE_GEMINI_TEXT_MODEL ?? "gemini-2.5-flash";
-const IMAGE_MODEL = env.VITE_GEMINI_IMAGE_MODEL ?? "gemini-2.5-flash-image";
+// Nano Banana Pro — far better instruction-following / fidelity than 2.5-flash-image
+// (e.g. respects the "no AIR/NIKE branding on the sole" constraint).
+const IMAGE_MODEL = env.VITE_GEMINI_IMAGE_MODEL ?? "gemini-3-pro-image";
 
 /** Current key: user-entered (localStorage) wins, else dev env fallback. */
 export function getApiKey(): string {
