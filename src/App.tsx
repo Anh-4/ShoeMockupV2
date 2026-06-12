@@ -57,18 +57,6 @@ export default function App() {
     try {
       const mediaIds = [insideImage, outsideImage].filter(Boolean).map(img => img!.mediaId);
 
-      const fidelityBase = `
-        STRICT FIDELITY MODE: The uploaded reference photos are a MANDATORY, BINDING BLUEPRINT of the exact product.
-        SUBJECT: Reproduce the EXACT shoe shown in the reference photos, pixel-faithfully.
-        ABSOLUTE CONSTRAINTS — preserve the uploaded shoe with ZERO changes:
-        1. DESIGN LOCK: Keep every design element exactly — all colors, patterns, prints, artwork, panels, stitching, materials, textures and their precise placement. Reproduce the colorway with exact hex accuracy.
-        2. SOLE LOCK: The outsole and midsole MUST be an exact replica of the reference — same tread pattern, color, thickness, shape and any text/logo on the sole.
-        3. DO NOT ADD: Never add, invent or embellish ANY detail — no extra logos, text, decorations, motifs, patterns, highlights or accents that are not in the reference photos.
-        4. DO NOT REMOVE OR ALTER: Never remove, simplify, recolor, reshape or modify any existing detail of the shoe.
-        5. NO HALLUCINATIONS: Do NOT add generic brand logos. Keep only what is in the photos.
-        The ONLY thing that may change is the surrounding scene/context described below; the shoe itself must remain a 1:1 clone of the upload.
-      `.trim();
-
       let currentResults: MockupResult[] = targetTemplates.length > 1 ? [] : [...results];
 
       for (const template of targetTemplates) {
@@ -106,9 +94,32 @@ export default function App() {
             sceneMediaIdCache.set(sceneCacheKey, sceneId);
           }
           referenceImageMediaIds = [sceneId, ...mediaIds];
-          fullPrompt = `${templatePrompt}\n\nADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}.`;
+          fullPrompt = [
+            templatePrompt,
+            shoeDescription ? `\nADDITIONAL NOTES: ${shoeDescription}` : '',
+            `\nFINAL CHECK: keep reference image #1 (the template) EXACTLY — its box, background, lighting, and the shoe's sole + silhouette. The ONLY change allowed is painting the upper with the design from the OTHER reference image(s), copied 1:1. Add, remove or invent NO detail.`
+          ].join('');
         } else {
-          fullPrompt = `${fidelityBase} SCENE: ${templatePrompt}. ADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}. High-end commercial product photography, 8k resolution, razor sharp details.`;
+          // Regular scene mockups: the uploaded shoe IS the subject. Frame this as
+          // an image-EDIT (composite the real shoe into a scene), not a redesign,
+          // and hammer the sole + design lock at both ends of the prompt.
+          fullPrompt = [
+            `IMAGE-EDIT / PRODUCT COMPOSITING TASK.`,
+            `The reference photo(s) show ONE specific real shoe. Composite that EXACT shoe — completely unchanged — into a new scene. This is NOT a redesign: do not re-imagine, restyle, "improve" or beautify the shoe.`,
+            ``,
+            `KEEP 100% IDENTICAL TO THE REFERENCE (non-negotiable):`,
+            `- Every design element: exact colors (hex), patterns, prints, artwork, panels, materials, textures, stitching, laces, logos and their exact placement.`,
+            `- The SOLE: outsole tread pattern, midsole shape and height, colors and any text/logo on the sole — reproduce it pixel-for-pixel. Do NOT add, sharpen, thicken or invent ANY sole detail.`,
+            `- The exact silhouette and proportions.`,
+            ``,
+            `SCENE (the only thing you may build around the shoe): ${templatePrompt}`,
+            ``,
+            `FORBIDDEN: adding extra logos/text/decoration, changing any color, altering the sole, smoothing or restyling materials, or adding details not visibly present in the reference photos.`,
+            shoeDescription ? `USER NOTE: ${shoeDescription}` : ``,
+            `Background/scene style: ${style}. Photorealistic, natural lighting.`,
+            ``,
+            `FINAL CHECK before output: the shoe — especially its SOLE and every design detail — must look 100% identical to the uploaded reference. Only the background/scene differs.`
+          ].filter(Boolean).join('\n');
         }
 
         const result = await Flow.generate.image({

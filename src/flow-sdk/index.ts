@@ -153,11 +153,13 @@ const generate = {
     aspectRatio?: string;
   }): Promise<GeneratedAsset> {
     const ar = args.aspectRatio ?? "1:1";
-    // Bake the aspect ratio into the prompt as well — robust across models
-    // that don't honour imageConfig.aspectRatio.
+    // Reference images go FIRST so the model treats this as an edit/composite of
+    // the provided product (much higher fidelity) rather than a fresh render.
+    // The aspect ratio is baked in at the TOP of the text so the closing
+    // fidelity reminder stays the last thing the model reads (recency).
     const parts: any[] = [
-      { text: `${args.prompt}\n\n[Output aspect ratio: ${ar}]` },
       ...refsToParts(args.referenceImageMediaIds ?? []),
+      { text: `[Output aspect ratio: ${ar}]\n\n${args.prompt}` },
     ];
 
     const res: any = await client().models.generateContent({
@@ -166,6 +168,8 @@ const generate = {
       config: {
         responseModalities: ["IMAGE", "TEXT"],
         imageConfig: { aspectRatio: ar },
+        // Low temperature → faithful to the reference, less creative drift.
+        temperature: 0.25,
       },
     });
 
