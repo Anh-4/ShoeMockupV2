@@ -14,16 +14,17 @@ REFERENCE IMAGE #1 (${sceneDescription}) is a FIXED MOCKUP TEMPLATE. Reproduce i
 - Keep the exact composition: the shoes at the same positions and angles, resting on/against the same surface or box.
 - Keep every printed branding text and logo EXACTLY as shown — do not alter, move, translate, recolor, or remove any text or logo.
 - Keep the same camera angle, perspective, framing, studio lighting, soft shadows, reflections and background.
-- Keep the shoe silhouette, proportions, sole, midsole, outsole and lace layout unchanged.
+- Keep the shoe silhouette, proportions and lace layout unchanged. Keep the SOLE, midsole and outsole EXACTLY as in reference image #1 — they are plain white and completely unbranded.
 
 THE ONLY THING YOU MAY CHANGE: repaint the blank shoe UPPER so its DESIGN matches the OTHER reference image(s) — reproduce that design EXACTLY and pixel-faithfully: its precise colors (hex-accurate), materials, textures, patterns, artwork, panel layout, stitching and logos, mapped onto the corresponding panels of BOTH shoes. Keep the design identical across the inner and outer shoe.
 
 CONSTRAINTS:
 - Do NOT change the box, background, lighting, or scene in any way.
+- SOLE / MIDSOLE BRANDING BAN: The sole and midsole stay completely plain exactly as in reference image #1. Do NOT add ANY text or logo to the sole/midsole/heel — specifically NO "AIR", NO "NIKE", no swoosh, no Jumpman, no numbers — even though the silhouette may resemble a famous sneaker. If the template sole has no lettering, the output sole has no lettering.
+- NO SPORTSWEAR LOGOS: Do NOT add a Nike swoosh, Jordan/Jumpman or any sportswear brand mark anywhere on the shoe. Only logos present in the design-reference image(s) are allowed.
 - DESIGN FIDELITY: Reproduce the uploaded design as a 1:1 copy. Do NOT add, remove, invent, embellish or modify ANY detail, logo, text, pattern or element that is not present in the design reference. No creative reinterpretation.
-- Do NOT add any brand logo that is not present in the design reference.
 - Match the colorway precisely; if the upper is patterned/printed, wrap it naturally over the panels following the template's shape and folds.
-- Photorealistic high-end commercial product photography, 8k, razor sharp.`;
+- Photorealistic high-end commercial product photography, sharp and clean.`;
 }
 
 /**
@@ -41,28 +42,13 @@ export const SHOE_BLANKS: ShoeBlank[] = [
     id: 'aj1',
     label: 'AJ1',
     sceneImage: { base64: LITTLEOWH_BOX_BASE64, mimeType: LITTLEOWH_BOX_MIME },
-    prompt: `STRICT TEMPLATE-LOCK MODE.
-
-REFERENCE IMAGE #1 (the blank white high-top sneakers on a kraft shoe box) is a FIXED MOCKUP TEMPLATE. Reproduce it faithfully and change NOTHING about the scene:
-- Keep the exact composition: two high-top sneakers (Air Jordan 1 silhouette) at the same positions and angles, resting on/against the cardboard shoe box.
-- Keep the cardboard box EXACTLY, including the printed branding text "SHOES CUSTOMIZED BY LITTLEOWH" / "STORE" and the owl logo — do not alter, move, translate, recolor, or remove any text or logo.
-- Keep the same camera angle, perspective, framing, studio lighting, soft shadows, reflections and the light-gray gradient background.
-- Keep the shoe silhouette, proportions, sole, midsole, black outsole and lace layout unchanged.
-
-THE ONLY THING YOU MAY CHANGE: repaint the blank white shoe UPPER so its DESIGN matches the OTHER reference image(s) — reproduce that design EXACTLY and pixel-faithfully: its precise colors (hex-accurate), materials, textures, patterns, artwork, panel layout, stitching and logos onto the corresponding panels of BOTH shoes. Keep the design identical across the inner and outer shoe.
-
-CONSTRAINTS:
-- Do NOT change the box, background, lighting, or scene in any way.
-- DESIGN FIDELITY: Reproduce the uploaded design as a 1:1 copy. Do NOT add, remove, invent, embellish or modify ANY detail, logo, text, pattern or element that is not present in the design reference. No creative reinterpretation.
-- Do NOT add any brand logo that is not present in the design reference.
-- Match the colorway precisely; if the upper is patterned/printed, wrap it naturally over the panels following the template's shape and folds.
-- Photorealistic high-end commercial product photography, 8k, razor sharp.`
+    prompt: blankLockPrompt('two blank white high-top sneakers, one resting on/against a kraft cardboard shoe box printed with the "SHOES CUSTOMIZED BY LITTLEOWH" / "STORE" branding and the owl logo, on a light-gray studio gradient background')
   },
   {
     id: 'af1',
     label: 'AF1',
     sceneImage: { base64: AF1_BOX_BASE64, mimeType: AF1_BOX_MIME },
-    prompt: blankLockPrompt('two blank white low-top sneakers, Nike Air Force 1 silhouette, one resting on top of and one standing in front of a kraft cardboard shoe box printed with the orange/brown branding text "ANIME SHOES CUSTOMIZED BY LITTLEOWH" and "ONE STOP ANIME STORE" plus the LITTLEOWH owl logo, on a light-gray studio gradient background')
+    prompt: blankLockPrompt('two blank white low-top sneakers, one resting on top of and one standing in front of a kraft cardboard shoe box printed with the orange/brown branding text "ANIME SHOES CUSTOMIZED BY LITTLEOWH" and "ONE STOP ANIME STORE" plus the LITTLEOWH owl logo, on a light-gray studio gradient background')
   }
   // 👇 Thêm phôi mới ở đây, ví dụ:
   // {
