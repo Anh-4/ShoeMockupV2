@@ -1,5 +1,77 @@
-import { Template } from './types';
+import { Template, ShoeBlank } from './types';
 import { LITTLEOWH_BOX_BASE64, LITTLEOWH_BOX_MIME } from './assets/littleowhBox';
+import { AF1_BOX_BASE64, AF1_BOX_MIME } from './assets/af1Box';
+
+/**
+ * Builds the strict "keep the scene, only repaint the upper" prompt shared by
+ * every shoe blank. Pass a short description of the FIXED scene (box, branding,
+ * silhouette) so the model knows exactly what must stay untouched.
+ */
+function blankLockPrompt(sceneDescription: string): string {
+  return `STRICT TEMPLATE-LOCK MODE.
+
+REFERENCE IMAGE #1 (${sceneDescription}) is a FIXED MOCKUP TEMPLATE. Reproduce it faithfully and change NOTHING about the scene:
+- Keep the exact composition: the shoes at the same positions and angles, resting on/against the same surface or box.
+- Keep every printed branding text and logo EXACTLY as shown — do not alter, move, translate, recolor, or remove any text or logo.
+- Keep the same camera angle, perspective, framing, studio lighting, soft shadows, reflections and background.
+- Keep the shoe silhouette, proportions, sole, midsole, outsole and lace layout unchanged.
+
+THE ONLY THING YOU MAY CHANGE: repaint the blank shoe UPPER so its DESIGN matches the OTHER reference image(s) — reproduce that design EXACTLY and pixel-faithfully: its precise colors (hex-accurate), materials, textures, patterns, artwork, panel layout, stitching and logos, mapped onto the corresponding panels of BOTH shoes. Keep the design identical across the inner and outer shoe.
+
+CONSTRAINTS:
+- Do NOT change the box, background, lighting, or scene in any way.
+- DESIGN FIDELITY: Reproduce the uploaded design as a 1:1 copy. Do NOT add, remove, invent, embellish or modify ANY detail, logo, text, pattern or element that is not present in the design reference. No creative reinterpretation.
+- Do NOT add any brand logo that is not present in the design reference.
+- Match the colorway precisely; if the upper is patterned/printed, wrap it naturally over the panels following the template's shape and folds.
+- Photorealistic high-end commercial product photography, 8k, razor sharp.`;
+}
+
+/**
+ * Shoe blanks selectable from the "Phôi giày" dropdown (box mockup only).
+ *
+ * 👉 To add a new blank:
+ *   1. Drop its image into src/assets/ and create a base64 export file
+ *      (see littleowhBox.ts as the pattern).
+ *   2. Import it above.
+ *   3. Push one entry below with a unique id, a dropdown label, the imported
+ *      sceneImage, and a prompt — use blankLockPrompt('<describe the scene>').
+ */
+export const SHOE_BLANKS: ShoeBlank[] = [
+  {
+    id: 'aj1',
+    label: 'AJ1',
+    sceneImage: { base64: LITTLEOWH_BOX_BASE64, mimeType: LITTLEOWH_BOX_MIME },
+    prompt: `STRICT TEMPLATE-LOCK MODE.
+
+REFERENCE IMAGE #1 (the blank white high-top sneakers on a kraft shoe box) is a FIXED MOCKUP TEMPLATE. Reproduce it faithfully and change NOTHING about the scene:
+- Keep the exact composition: two high-top sneakers (Air Jordan 1 silhouette) at the same positions and angles, resting on/against the cardboard shoe box.
+- Keep the cardboard box EXACTLY, including the printed branding text "SHOES CUSTOMIZED BY LITTLEOWH" / "STORE" and the owl logo — do not alter, move, translate, recolor, or remove any text or logo.
+- Keep the same camera angle, perspective, framing, studio lighting, soft shadows, reflections and the light-gray gradient background.
+- Keep the shoe silhouette, proportions, sole, midsole, black outsole and lace layout unchanged.
+
+THE ONLY THING YOU MAY CHANGE: repaint the blank white shoe UPPER so its DESIGN matches the OTHER reference image(s) — reproduce that design EXACTLY and pixel-faithfully: its precise colors (hex-accurate), materials, textures, patterns, artwork, panel layout, stitching and logos onto the corresponding panels of BOTH shoes. Keep the design identical across the inner and outer shoe.
+
+CONSTRAINTS:
+- Do NOT change the box, background, lighting, or scene in any way.
+- DESIGN FIDELITY: Reproduce the uploaded design as a 1:1 copy. Do NOT add, remove, invent, embellish or modify ANY detail, logo, text, pattern or element that is not present in the design reference. No creative reinterpretation.
+- Do NOT add any brand logo that is not present in the design reference.
+- Match the colorway precisely; if the upper is patterned/printed, wrap it naturally over the panels following the template's shape and folds.
+- Photorealistic high-end commercial product photography, 8k, razor sharp.`
+  },
+  {
+    id: 'af1',
+    label: 'AF1',
+    sceneImage: { base64: AF1_BOX_BASE64, mimeType: AF1_BOX_MIME },
+    prompt: blankLockPrompt('two blank white low-top sneakers, Nike Air Force 1 silhouette, one resting on top of and one standing in front of a kraft cardboard shoe box printed with the orange/brown branding text "ANIME SHOES CUSTOMIZED BY LITTLEOWH" and "ONE STOP ANIME STORE" plus the LITTLEOWH owl logo, on a light-gray studio gradient background')
+  }
+  // 👇 Thêm phôi mới ở đây, ví dụ:
+  // {
+  //   id: 'phoi3',
+  //   label: 'Phôi giày 3',
+  //   sceneImage: { base64: PHOI3_BASE64, mimeType: PHOI3_MIME },
+  //   prompt: blankLockPrompt('the blank sneakers on a white pedestal with "BRAND" text')
+  // }
+];
 
 export const MOCKUP_TEMPLATES: Template[] = [
   {
@@ -34,24 +106,11 @@ export const MOCKUP_TEMPLATES: Template[] = [
   },
   {
     id: 'littleowh_box',
-    title: 'Phôi LITTLEOWH',
+    title: 'Phôi giày (Hộp)',
     icon: 'design_services',
-    sceneImage: { base64: LITTLEOWH_BOX_BASE64, mimeType: LITTLEOWH_BOX_MIME },
-    prompt: `STRICT TEMPLATE-LOCK MODE.
-
-REFERENCE IMAGE #1 (the blank white high-top sneakers on a kraft shoe box) is a FIXED MOCKUP TEMPLATE. Reproduce it faithfully and change NOTHING about the scene:
-- Keep the exact composition: two high-top sneakers (Air Jordan 1 silhouette) at the same positions and angles, resting on/against the cardboard shoe box.
-- Keep the cardboard box EXACTLY, including the printed branding text "SHOES CUSTOMIZED BY LITTLEOWH" / "STORE" and the owl logo — do not alter, move, translate, recolor, or remove any text or logo.
-- Keep the same camera angle, perspective, framing, studio lighting, soft shadows, reflections and the light-gray gradient background.
-- Keep the shoe silhouette, proportions, sole, midsole, black outsole and lace layout unchanged.
-
-THE ONLY THING YOU MAY CHANGE: repaint the blank white shoe UPPER so its DESIGN matches the OTHER reference image(s) — apply that design's exact colors (hex-accurate), materials, textures, patterns, panel layout, stitching and logos onto the corresponding panels of BOTH shoes. Keep the design consistent across the inner and outer shoe.
-
-CONSTRAINTS:
-- Do NOT change the box, background, lighting, or scene in any way.
-- Do NOT add any brand logo that is not present in the design reference.
-- Match the colorway precisely; if the upper is patterned/printed, wrap it naturally over the panels following the template's shape and folds.
-- Photorealistic high-end commercial product photography, 8k, razor sharp.`
+    blankSelector: true,
+    // Scene image + prompt are chosen at runtime from SHOE_BLANKS via the dropdown.
+    prompt: ''
   },
   {
     id: 'cosplay_shop',

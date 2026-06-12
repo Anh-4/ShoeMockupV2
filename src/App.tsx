@@ -5,7 +5,7 @@ import ShoeUploadSlot from './components/ShoeUploadSlot';
 import MockupGrid from './components/MockupGrid';
 import MockupSelectorPanel from './components/MockupSelectorPanel';
 import { MockupResult, MediaItem, Template } from './types';
-import { MOCKUP_TEMPLATES } from './constants';
+import { MOCKUP_TEMPLATES, SHOE_BLANKS } from './constants';
 
 // Caches the mediaId of each template's fixed scene image after its first
 // upload, so we don't re-upload the same blueprint on every generation.
@@ -20,6 +20,7 @@ export default function App() {
   const [results, setResults] = useState<MockupResult[]>([]);
   const [currentStep, setCurrentStep] = useState('');
   const [generatingIds, setGeneratingIds] = useState<string[]>([]);
+  const [selectedBlankId, setSelectedBlankId] = useState(SHOE_BLANKS[0].id);
 
   useEffect(() => {
     const id = 'flow-shoe-mockup-css';
@@ -57,19 +58,34 @@ export default function App() {
       const mediaIds = [insideImage, outsideImage].filter(Boolean).map(img => img!.mediaId);
 
       const fidelityBase = `
-        STRICT FIDELITY MODE: Use the provided images as a MANDATORY BLUEPRINT.
-        SUBJECT: The exact product shown in the reference photos.
-        CONSTRAINTS:
-        1. 1:1 CLONE: Do not add, remove, or modify any stitch, panel, or material.
-        2. SOLE INTEGRITY: The outsole and midsole MUST be an exact replica of the reference. Maintain the original tread pattern, thickness, and branding on the sole.
-        3. NO HALLUCINATIONS: Do NOT add generic brand logos. Keep it unbranded or keep only what is in the photos.
-        4. COLOR ACCURACY: Maintain the exact hex codes and color placement of the source product.
+        STRICT FIDELITY MODE: The uploaded reference photos are a MANDATORY, BINDING BLUEPRINT of the exact product.
+        SUBJECT: Reproduce the EXACT shoe shown in the reference photos, pixel-faithfully.
+        ABSOLUTE CONSTRAINTS — preserve the uploaded shoe with ZERO changes:
+        1. DESIGN LOCK: Keep every design element exactly — all colors, patterns, prints, artwork, panels, stitching, materials, textures and their precise placement. Reproduce the colorway with exact hex accuracy.
+        2. SOLE LOCK: The outsole and midsole MUST be an exact replica of the reference — same tread pattern, color, thickness, shape and any text/logo on the sole.
+        3. DO NOT ADD: Never add, invent or embellish ANY detail — no extra logos, text, decorations, motifs, patterns, highlights or accents that are not in the reference photos.
+        4. DO NOT REMOVE OR ALTER: Never remove, simplify, recolor, reshape or modify any existing detail of the shoe.
+        5. NO HALLUCINATIONS: Do NOT add generic brand logos. Keep only what is in the photos.
+        The ONLY thing that may change is the surrounding scene/context described below; the shoe itself must remain a 1:1 clone of the upload.
       `.trim();
 
       let currentResults: MockupResult[] = targetTemplates.length > 1 ? [] : [...results];
 
       for (const template of targetTemplates) {
         setCurrentStep(`Đang tạo: ${template.title}...`);
+
+        // Resolve the fixed scene: either pinned on the template, or — for the
+        // box mockup (blankSelector) — taken from the currently selected blank.
+        let sceneImage = template.sceneImage;
+        let templatePrompt = template.prompt;
+        let sceneCacheKey = template.id;
+
+        if (template.blankSelector) {
+          const blank = SHOE_BLANKS.find(b => b.id === selectedBlankId) ?? SHOE_BLANKS[0];
+          sceneImage = blank.sceneImage;
+          templatePrompt = blank.prompt;
+          sceneCacheKey = `blank:${blank.id}`;
+        }
 
         // Templates with a fixed sceneImage (e.g. the LITTLEOWH blank) send that
         // image FIRST as the locked blueprint, then the user's design photos.
@@ -78,21 +94,21 @@ export default function App() {
         let referenceImageMediaIds = mediaIds;
         let fullPrompt: string;
 
-        if (template.sceneImage) {
-          let sceneId = sceneMediaIdCache.get(template.id);
+        if (sceneImage) {
+          let sceneId = sceneMediaIdCache.get(sceneCacheKey);
           if (!sceneId) {
             const up = await Flow.upload({
-              base64: template.sceneImage.base64,
-              mimeType: template.sceneImage.mimeType,
+              base64: sceneImage.base64,
+              mimeType: sceneImage.mimeType,
               name: 'template-scene'
             });
             sceneId = up.mediaId;
-            sceneMediaIdCache.set(template.id, sceneId);
+            sceneMediaIdCache.set(sceneCacheKey, sceneId);
           }
           referenceImageMediaIds = [sceneId, ...mediaIds];
-          fullPrompt = `${template.prompt}\n\nADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}.`;
+          fullPrompt = `${templatePrompt}\n\nADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}.`;
         } else {
-          fullPrompt = `${fidelityBase} SCENE: ${template.prompt}. ADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}. High-end commercial product photography, 8k resolution, razor sharp details.`;
+          fullPrompt = `${fidelityBase} SCENE: ${templatePrompt}. ADDITIONAL NOTES: ${shoeDescription}. RENDER STYLE: ${style}. High-end commercial product photography, 8k resolution, razor sharp details.`;
         }
 
         const result = await Flow.generate.image({
@@ -129,7 +145,7 @@ export default function App() {
       setIsGenerating(false);
       setGeneratingIds([]);
     }
-  }, [insideImage, outsideImage, shoeDescription, style, results]);
+  }, [insideImage, outsideImage, shoeDescription, style, results, selectedBlankId]);
 
   const handleGenerateCombo = () => handleGenerate(MOCKUP_TEMPLATES);
 
@@ -215,6 +231,8 @@ export default function App() {
         generatingIds={generatingIds}
         onGenerateSingle={(template) => handleGenerate([template])}
         disabled={!insideImage && !outsideImage}
+        selectedBlankId={selectedBlankId}
+        onSelectBlank={setSelectedBlankId}
       />
     </div>
   );
