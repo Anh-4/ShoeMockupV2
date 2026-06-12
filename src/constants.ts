@@ -27,6 +27,7 @@ WHAT YOU MUST CHANGE — apply the DESIGN from the design-source image(s) onto t
 CONSTRAINTS:
 - Do NOT change the box, background, lighting or scene in any way.
 - SOLE / MIDSOLE BRANDING BAN: keep the sole and midsole plain exactly as in image #1. Add NO text or logo to the sole/midsole/heel — NO "AIR", NO "NIKE", no swoosh, no Jumpman, no numbers — even if the silhouette resembles a famous sneaker.
+- SMOOTH MIDSOLE GEOMETRY: the midsole is ONE smooth, continuous, clean white surface from toe to heel. Add NO notch, recess, step, cut-out, groove, vent hole, panel line, stitch or embossed shape anywhere on it — especially at the HEEL/back. Reproduce the plain smooth midsole of reference image #1 exactly; the ONLY texture allowed is the normal tread on the very bottom of the outsole.
 - Apply ONLY the design from the design-source image(s); do not invent extra logos, text or patterns that are not in it.
 - Match the colorway precisely; wrap patterned/printed designs naturally over the panels following the template's folds.
 - Photorealistic, sharp and clean.`;

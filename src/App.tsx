@@ -101,7 +101,7 @@ export default function App() {
           fullPrompt = [
             templatePrompt,
             shoeDescription ? `\nADDITIONAL NOTES: ${shoeDescription}` : '',
-            `\nFINAL CHECK before output: (1) box, background, lighting, silhouette and the plain white sole/midsole stay EXACTLY as in reference image #1 — there is NO "AIR" or Nike text on the heel/sole, the midsole is smooth and blank; (2) the shoe UPPER clearly shows the design copied from the design-source image(s) and is NOT left plain white.`
+            `\nFINAL CHECK before output: (1) box, background, lighting, silhouette and the plain white sole/midsole stay EXACTLY as in reference image #1 — NO "AIR"/Nike text and NO notch, recess, groove or cut-out on the midsole; the midsole is one smooth blank white surface, especially at the heel; (2) the shoe UPPER clearly shows the design copied from the design-source image(s) and is NOT left plain white.`
           ].join('');
         } else {
           // Regular scene mockups: the uploaded shoe IS the subject. Frame this as

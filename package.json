@@ -1,7 +1,7 @@
 {
   "name": "shoe-mockup-v2",
   "private": true,
-  "version": "1.2.2",
+  "version": "1.2.3",
   "type": "module",
   "description": "AI shoe mockup generator (Gemini-powered) desktop app",
   "author": "Vani Ecom",
